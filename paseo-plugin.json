@@ -1,7 +1,7 @@
 {
   "id": "paseo-omp-screenshots",
   "name": "OMP screenshots",
-  "description": "Temporary inline previews for OMP browser screenshot blob results.",
+  "description": "Temporary inline previews for OMP browser screenshots with embedded images or blob references.",
   "requirements": {
     "paseo": ">=0.11.4 <0.12.0"
   }

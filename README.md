@@ -20,6 +20,12 @@ Install directly from GitHub. Paseo compiles the plugin; no dependency installat
 paseo plugin add git:suiramdev/paseo-omp-screenshots
 ```
 
+For an existing GitHub install, fetch the correction:
+
+```sh
+paseo plugin update paseo-omp-screenshots
+```
+
 For local development:
 
 ```sh
@@ -31,7 +37,7 @@ paseo plugin install /absolute/path/to/paseo-omp-screenshots
 
 Plugins must already be enabled in Paseo settings. They are trusted, unsandboxed code. This plugin reads only hash-addressed image files, not caller-supplied filesystem paths. It does not start an HTTP server or upload images externally.
 
-Existing screenshot tool results render when their history is loaded. No agent rerun is needed. Click a preview to open its dialog; **Show tool output** reveals the original JSON. The default blob directory is `~/.omp/agent/blobs` on the daemon host. Override it using the daemon environment variable `OMP_SCREENSHOTS_BLOB_DIR` if necessary.
+Existing screenshot tool results render when their history is loaded. No agent rerun is needed. The plugin accepts embedded base64 images and OMP blob references. Embedded images render directly; blob references load from `~/.omp/agent/blobs` on the daemon host. Click a preview to open its dialog; **Show tool output** reveals the original JSON. Override the blob directory using the daemon environment variable `OMP_SCREENSHOTS_BLOB_DIR` if necessary.
 
 After editing:
 
@@ -51,14 +57,17 @@ Removal leaves source files and OMP blobs intact. The plugin never rewrites conv
 
 ## Limits
 
-- Only completed browser-screenshot results containing `blob:sha256:<64 lowercase hex characters>` are transformed. Other tool rows remain unchanged.
-- PNG, JPEG, WebP, and GIF, at most 8 MiB per blob. Bytes must match the content hash and an accepted image signature.
-- Inline base64 images, general read-tool images, assistant image messages, and deleted blobs are outside this workaround.
-- Uses the selected host's existing plugin RPC connection. OMP's blob store must be readable by that host's daemon.
+- Only completed browser-screenshot results with raw base64 image data or `blob:sha256:<64 lowercase hex characters>` are transformed. Other tool rows remain unchanged.
+- PNG, JPEG, WebP, and GIF are supported. Embedded image bytes stay on the client; the browser or native image decoder validates them.
+- Blob files are limited to 8 MiB. Bytes must match the content hash and an accepted image signature.
+- General read-tool images, assistant image messages, and deleted blobs are outside this workaround.
+- Blob references use the selected host's existing plugin RPC connection. OMP's blob store must be readable by that host's daemon.
 - Native iOS/Android use React Native components but were not device-tested.
 
 ## Verification
 
 Verified with the installed Paseo 0.11.4 web bundle connected to the running daemon, not a mock component harness. The original conversation loaded three 2338×1462 screenshot previews. The supplied `d7228d…4052a` blob decoded to a 64,390-byte PNG with the expected SHA-256. Checked the image dialog and compact browser geometry. Exercised the installed RPC for valid, missing, and malformed references.
 
-`npm test` covers exact byte delivery, integrity mismatch, missing blobs, traversal rejection, non-image data, the size boundary, screenshot recognition, and leaving unsuccessful or unsupported tool results untouched.
+The base64 correction was checked against the reported conversation, including the exact 2338×1462 PNG. Its preview and dialog decoded at full source dimensions. The compact preview fit a 430 px viewport without horizontal overflow. Four existing blob-based previews still decoded, including `d7228d…4052a`.
+
+`npm test` covers embedded and mixed-format screenshot results, exact blob byte delivery, integrity mismatch, missing blobs, traversal rejection, non-image data, the size boundary, and leaving unsuccessful or unsupported tool results untouched.
