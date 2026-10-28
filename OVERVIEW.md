@@ -2,7 +2,7 @@
 
 Shows Oh My Pi browser screenshots inline in the Paseo conversation instead of leaving their image blocks in raw tool-output JSON. Select a preview to open it in a dialog. The original output remains available under **Show tool output**.
 
-Requires Paseo 0.11.4 for both the daemon and client. Compatibility is bounded below 0.12.0 until that release is checked. This is a temporary workaround for [Paseo #3244](https://github.com/getpaseo/paseo/issues/3244), not a patch to Paseo or OMP.
+Requires Paseo 0.11.4 through 0.14.x (including 0.14 prereleases) for both the daemon and client. Compatibility is bounded below 0.15.0 until that release is checked. This is a temporary workaround for [Paseo #3244](https://github.com/getpaseo/paseo/issues/3244), not a patch to Paseo or OMP.
 
 The plugin accepts raw base64 images and `blob:sha256:…` references from completed browser-screenshot tool results. Embedded images render directly on the client. For blob references, the backend reads the corresponding extensionless file from `~/.omp/agent/blobs`, checks its SHA-256 and image signature, and sends the image through the existing Paseo plugin RPC connection. No public image server or external upload is used.
 

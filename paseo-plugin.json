@@ -3,6 +3,6 @@
   "name": "OMP screenshots",
   "description": "Temporary inline previews for OMP browser screenshots with embedded images or blob references.",
   "requirements": {
-    "paseo": ">=0.11.4 <0.12.0"
+    "paseo": ">=0.11.4 <0.15.0"
   }
 }

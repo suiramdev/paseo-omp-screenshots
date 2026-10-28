@@ -12,7 +12,7 @@ Related open reports: [#7011: Pi read images missing from the timeline](https://
 
 ## Install
 
-Requires Paseo daemon and client 0.11.4, Node/npm for development, and Bun for tests. The manifest permits 0.11.4 through 0.11.x; later versions need compatibility verification.
+Requires Paseo daemon and client 0.11.4 through 0.14.x (including 0.14 prereleases), Node/npm for development, and Bun for tests. The manifest permits 0.11.4 through 0.14.x; later versions need compatibility verification.
 
 Install directly from GitHub. Paseo compiles the plugin; no dependency installation is needed on the daemon:
 
